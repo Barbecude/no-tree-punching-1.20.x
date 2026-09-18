@@ -3,6 +3,7 @@ package com.alcatrazescapee.notreepunching.platform;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -12,6 +13,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.MenuProvider;
@@ -68,17 +70,33 @@ public final class FabricPlatform implements XPlatform
     @Override
     public <T extends AbstractContainerMenu> MenuType<T> containerType(ContainerFactory<T> factory)
     {
-        return new ExtendedScreenHandlerType<>(factory::create);
+        return new ExtendedScreenHandlerType<>((windowId, inventory, data) -> {
+            FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.wrappedBuffer(data));
+            try
+            {
+                return factory.create(windowId, inventory, buffer);
+            }
+            finally
+            {
+                buffer.release();
+            }
+        }, ByteBufCodecs.BYTE_ARRAY);
     }
 
     @Override
     public void openScreen(ServerPlayer serverPlayer, MenuProvider provider, Consumer<FriendlyByteBuf> buffer)
     {
-        serverPlayer.openMenu(new ExtendedScreenHandlerFactory() {
+        FriendlyByteBuf byteBuf = new FriendlyByteBuf(Unpooled.buffer());
+        buffer.accept(byteBuf);
+        byte[] data = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(data);
+        byteBuf.release();
+
+        serverPlayer.openMenu(new ExtendedScreenHandlerFactory<byte[]>() {
             @Override
-            public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf bufferIn)
+            public byte[] getScreenOpeningData(ServerPlayer player)
             {
-                buffer.accept(bufferIn);
+                return data;
             }
 
             @Override

@@ -70,7 +70,7 @@ public class FireStarterItem extends TieredItem
                     }
                     else
                     {
-                        List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos.above(), pos.offset(1, 2, 1)));
+                        List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos.above()));
                         List<ItemEntity> logEntities = new ArrayList<>(), kindlingEntities = new ArrayList<>(), soulFireEntities = new ArrayList<>();
 
                         // Require 1 log, 3 kindling

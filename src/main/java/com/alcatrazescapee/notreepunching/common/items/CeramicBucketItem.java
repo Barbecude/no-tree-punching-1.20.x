@@ -74,7 +74,7 @@ public class CeramicBucketItem extends BucketItem
                 final BlockState state = level.getBlockState(pos);
                 if (state.getBlock() instanceof BucketPickup pickup && state.getFluidState().getType() == Fluids.WATER)
                 {
-                    final ItemStack filled = convert(pickup.pickupBlock(level, pos, state).getItem());
+                    final ItemStack filled = convert(pickup.pickupBlock(player, level, pos, state).getItem());
                     if (!filled.isEmpty())
                     {
                         player.awardStat(Stats.ITEM_USED.get(this));

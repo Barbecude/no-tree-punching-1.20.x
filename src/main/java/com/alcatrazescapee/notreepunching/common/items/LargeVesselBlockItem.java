@@ -30,9 +30,10 @@ public class LargeVesselBlockItem extends BlockItem
         if (blockEntityData != null)
         {
             final var tag = blockEntityData.copyTag();
-            if (tag != null)
+            final var registries = context.registries();
+            if (tag != null && registries != null)
             {
-                final var listInventory = ItemStackListInventory.create(LargeVesselBlockEntity.SLOTS, tag);
+                final var listInventory = ItemStackListInventory.create(LargeVesselBlockEntity.SLOTS, tag, registries);
                 Helpers.addInventoryTooltip(listInventory, tooltip);
             }
         }

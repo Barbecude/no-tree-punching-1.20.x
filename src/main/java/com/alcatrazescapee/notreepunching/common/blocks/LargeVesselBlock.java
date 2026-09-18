@@ -60,14 +60,13 @@ public class LargeVesselBlock extends Block implements EntityBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
     {
         if (player instanceof ServerPlayer serverPlayer && !player.isShiftKeyDown())
         {
             level.getBlockEntity(pos, ModBlockEntities.LARGE_VESSEL.get()).ifPresent(tile -> XPlatform.INSTANCE.openScreen(serverPlayer, tile, pos));
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
