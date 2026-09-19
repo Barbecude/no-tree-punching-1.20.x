@@ -8,7 +8,7 @@
     "item": "minecraft:netherite_ingot"
   },
   "result": {
-    "item": "notreepunching:netherite_mattock"
+    "id": "notreepunching:netherite_mattock"
   },
   "template": {
     "item": "minecraft:netherite_upgrade_smithing_template"

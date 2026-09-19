@@ -4,7 +4,9 @@
   "ingredient": {
     "item": "notreepunching:clay_large_vessel"
   },
-  "result": "notreepunching:ceramic_large_vessel",
+  "result": {
+    "id": "notreepunching:ceramic_large_vessel"
+  },
   "experience": 0.1,
   "cookingtime": 600
 }

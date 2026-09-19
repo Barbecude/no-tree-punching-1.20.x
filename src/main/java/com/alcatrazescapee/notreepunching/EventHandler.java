@@ -6,13 +6,19 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +31,38 @@ import com.alcatrazescapee.notreepunching.util.Helpers;
 
 public final class EventHandler
 {
+    public static void onPlayerBreakBlock(Level level, Player player, BlockPos pos, BlockState state)
+    {
+        if (!level.isClientSide && state.is(BlockTags.LEAVES))
+        {
+            final ItemStack stack = player.getMainHandItem();
+            if (!stack.is(Items.SHEARS) && !stack.is(ModTags.Items.SHEARS))
+            {
+                boolean hasSilkTouch = false;
+                var enchantmentReg = level.registryAccess().registry(Registries.ENCHANTMENT);
+                if (enchantmentReg.isPresent())
+                {
+                    var silkTouchHolder = enchantmentReg.get().getHolder(Enchantments.SILK_TOUCH);
+                    if (silkTouchHolder.isPresent() && EnchantmentHelper.getItemEnchantmentLevel(silkTouchHolder.get(), stack) > 0)
+                    {
+                        hasSilkTouch = true;
+                    }
+                }
+
+                if (!hasSilkTouch && level.random.nextFloat() < Config.INSTANCE.leafStickDropChance.getAsFloat())
+                {
+                    Block.popResource(level, pos, new ItemStack(Items.STICK, level.random.nextInt(2) + 1));
+                }
+            }
+        }
+    }
+
     public static boolean modifyHarvestCheck(Player player, BlockState state, @Nullable BlockPos pos, boolean canHarvest)
     {
+        if (state.is(BlockTags.LOGS))
+        {
+            return HarvestBlockHandler.isUsingCorrectToolForDrops(state, pos, player);
+        }
         return canHarvest || HarvestBlockHandler.isUsingCorrectToolForDrops(state, pos, player);
     }
 

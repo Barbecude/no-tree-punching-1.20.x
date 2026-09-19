@@ -11,12 +11,12 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "minecraft:grass",
+              "name": "minecraft:short_grass",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "notreepunching:shears"
+                    "items": "#notreepunching:shears"
                   }
                 }
               ]
@@ -28,7 +28,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "notreepunching:knives"
+                    "items": "#notreepunching:knives"
                   }
                 },
                 {

@@ -28,6 +28,7 @@ public final class ModTags
 
         public static final TagKey<Item> SAWS = create("saws");
         public static final TagKey<Item> WEAK_SAWS = create("weak_saws");
+        public static final TagKey<Item> SHEARS = create("shears");
 
         private static TagKey<Item> create(String id)
         {

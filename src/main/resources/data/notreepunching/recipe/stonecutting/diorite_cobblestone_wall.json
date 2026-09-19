@@ -4,6 +4,8 @@
   "ingredient": {
     "item": "notreepunching:diorite_cobblestone"
   },
-  "result": "notreepunching:diorite_cobblestone_wall",
-  "count": 1
+  "result": {
+    "id": "notreepunching:diorite_cobblestone_wall",
+    "count": 1
+  }
 }

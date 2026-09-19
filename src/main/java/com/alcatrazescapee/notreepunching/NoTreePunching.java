@@ -59,10 +59,13 @@ public final class NoTreePunching
         ModContainers.CONTAINERS.lateSetup();
         ModRecipes.RECIPE_SERIALIZERS.lateSetup();
         ModRecipes.RECIPE_TYPES.lateSetup();
-
         ModFeatures.FEATURES.lateSetup();
 
         HarvestBlockHandler.setup();
+
+        net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
+            EventHandler.onPlayerBreakBlock(level, player, pos, state);
+        });
 
         // In 1.21, BlockSource uses .pos() and .level() instead of getPos() and getLevel()
         DispenserBlock.registerBehavior(ModItems.CLAY_TOOL.get(), (context, stack) -> {

@@ -4,7 +4,9 @@
   "ingredient": {
     "item": "notreepunching:granite_cobblestone"
   },
-  "result": "minecraft:granite",
+  "result": {
+    "id": "minecraft:granite"
+  },
   "experience": 0.1,
   "cookingtime": 200
 }

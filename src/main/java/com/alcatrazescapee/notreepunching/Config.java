@@ -38,6 +38,7 @@ public enum Config
 
     public final FloatValue flintKnappingConsumeChance;
     public final FloatValue flintKnappingSuccessChance;
+    public final FloatValue leafStickDropChance;
     public final FloatValue fireStarterFireStartChance;
     public final BoolValue fireStarterCanMakeCampfire;
     public final BoolValue fireStarterCanMakeSoulCampfire;
@@ -70,12 +71,12 @@ public enum Config
             .comment("If blocks drop their items without the correct tool.")
             .define("doBlocksDropWithoutCorrectTool", false);
 
-        doInstantBreakBlocksDropWithoutCorrectTool = builder
-            .comment("If blocks that break instantly are mineable without the correct tool.")
-            .define("doInstantBreakBlocksDropWithoutCorrectTool", false);
         doInstantBreakBlocksMineWithoutCorrectTool = builder
-            .comment("If blocks that break instantly drop their items without the correct tool.")
+            .comment("If blocks that break instantly are mineable without the correct tool.")
             .define("doInstantBreakBlocksMineWithoutCorrectTool", true);
+        doInstantBreakBlocksDropWithoutCorrectTool = builder
+            .comment("If blocks that break instantly drop their items without the correct tool.")
+            .define("doInstantBreakBlocksDropWithoutCorrectTool", true);
 
         doInstantBreakBlocksDamageKnives = builder
             .comment("If blocks such as tall grass which break instantly consume durability when broken with a knife (only affects No Tree Punching knives)")
@@ -88,6 +89,10 @@ public enum Config
         flintKnappingSuccessChance = builder
             .comment("The chance to produce flint shards if a piece of flint has been consumed while knapping")
             .define("flintKnappingSuccessChance", 0.7f, 0f, 1f);
+
+        leafStickDropChance = builder
+            .comment("The chance for leaves to drop sticks when broken by a player without shears")
+            .define("leafStickDropChance", 0.2f, 0f, 1f);
 
         fireStarterFireStartChance = builder
             .comment("The chance for a fire starter to start fires")

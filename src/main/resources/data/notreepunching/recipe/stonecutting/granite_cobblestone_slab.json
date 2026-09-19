@@ -4,6 +4,8 @@
   "ingredient": {
     "item": "notreepunching:granite_cobblestone"
   },
-  "result": "notreepunching:granite_cobblestone_slab",
-  "count": 2
+  "result": {
+    "id": "notreepunching:granite_cobblestone_slab",
+    "count": 2
+  }
 }

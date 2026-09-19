@@ -13,7 +13,7 @@
     }
   ],
   "result": {
-    "item": "minecraft:flint",
+    "id": "minecraft:flint",
     "count": 2
   }
 }

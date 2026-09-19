@@ -4,6 +4,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,19 +23,10 @@ public final class HarvestBlockHandler
 {
     public static void setup()
     {
-        for (Block block : BuiltInRegistries.BLOCK)
-        {
-            final AbstractBlockAccessor blockAccess = (AbstractBlockAccessor) block;
-            final BlockBehaviour.Properties settings = blockAccess.getProperties();
-
-            // Forcefully set everything to require a tool
-            // Need to do both the block settings and the block state since the value is copied there for every state
-            settings.requiresCorrectToolForDrops();
-            for (BlockState state : block.getStateDefinition().getPossibleStates())
-            {
-                ((AbstractBlockStateAccessor) state).setRequiresCorrectToolForDrops(true);
-            }
-        }
+        // Empty on purpose:
+        // Do NOT forcefully set requiresCorrectToolForDrops on all blocks in BuiltInRegistries.BLOCK.
+        // Doing so breaks every other mod and causes blocks that should drop by hand (torches, crops,
+        // lanterns, modded decorations) to drop nothing and get destroyed.
     }
 
     public static boolean isUsingCorrectToolToMine(BlockState state, @Nullable BlockPos pos, Player player)
@@ -63,6 +55,12 @@ public final class HarvestBlockHandler
         if (state.is(alwaysAllowTag))
         {
             return true; // Block is set to always allow
+        }
+
+        // If a block does not naturally require a tool for drops and is not a log, it is always allowed to mine and drop
+        if (!state.requiresCorrectToolForDrops() && !state.is(BlockTags.LOGS))
+        {
+            return true;
         }
 
         final ItemStack stack = player.getMainHandItem();

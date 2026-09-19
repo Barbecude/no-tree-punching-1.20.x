@@ -11,19 +11,14 @@
           "name": "notreepunching:ceramic_large_vessel",
           "functions": [
             {
-              "function": "minecraft:copy_name",
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "minecraft:container",
+                "minecraft:lock",
+                "minecraft:container_loot"
+              ],
               "source": "block_entity"
-            },
-            {
-              "function": "minecraft:copy_nbt",
-              "source": "block_entity",
-              "ops": [
-                {
-                  "source": "",
-                  "target": "BlockEntityTag",
-                  "op": "replace"
-                }
-              ]
             }
           ]
         }

@@ -4,7 +4,9 @@
   "ingredient": {
     "item": "notreepunching:clay_flower_pot"
   },
-  "result": "minecraft:flower_pot",
+  "result": {
+    "id": "minecraft:flower_pot"
+  },
   "experience": 0.1,
   "cookingtime": 600
 }
